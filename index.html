@@ -313,7 +313,17 @@
             <p>
                 After building a visual concept library (see paper Section 3.3),
                 we are able to generate novel samples by randomly composing
-                different concept slots. Compared to baselines, SlotDiffusion
+                different concept slots.
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/CLEVRTex-CelebA-compose-mechanism.png"
+                    style="width: 100%"
+                />
+            </p>
+            <p>
+                We show more results below. Compared to baselines, SlotDiffusion
                 generates results closer to the original datasets.
             </p>
             <p align="center">
@@ -363,11 +373,11 @@
             <hr />
             <p>
                 We now show how SlotDiffusion's better slot decoder can help
-                downstream video prediction and VQA task. We train an
-                object-centric dynamics model
-                <a href="https://slotformer.github.io/">SlotFormer</a> (SF) over
-                learned slots, and perform future rollout. Our method simulates
-                both correct object dynamics and better visual quality. We also
+                downstream video prediction and VQA tasks. We train an
+                object-centric dynamics model SlotFormer (SF for short) [7] over
+                learned slots, and perform future rollout. Then, we reason the
+                predicted future to answer questions. Our method simulates both
+                correct object dynamics and better visual quality. We also
                 achieve SOTA VQA results on Physion (see paper Section 4.4).
             </p>
             <div align="center">
@@ -396,10 +406,10 @@
             <hr />
             <p>
                 Finally, we show that SlotDiffusion can scale up to real-world
-                datasets MS COCO and PASCAL VOC with the help of DINO
+                datasets MS COCO and PASCAL VOC with the help of DINO [14]
                 pre-trained image encoders. Our method not only segments major
                 objects, but also discovers unannotated yet semantically
-                meaningful regions, such as trees, keyboards.
+                meaningful regions, such as trees and keyboards.
             </p>
             <p align="center">
                 <img
