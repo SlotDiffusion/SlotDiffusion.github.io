@@ -60,10 +60,338 @@
         <div class="jumbotron jumbotron-fluid">
             <div class="container" align="center">
                 <h2>
-                    SlotDiffusion: Improving Object-Centric Generative Modeling with Diffusion Models
+                    SlotDiffusion: Improving Object-Centric <br />
+                    Generative Modeling with Diffusion Models
                 </h2>
                 <h4><i>Anonymous Submission</i></h4>
             </div>
+        </div>
+
+        <!--------------------- Abstract --------------------->
+        <br />
+        <div class="container">
+            <div align="center"><h2>Abstract</h2></div>
+            <hr />
+            <p>
+                Object-centric learning aims to decompose the visual data into a
+                set of individual entities, in contrast to traditional deep
+                learning models that represent a scene with global features.
+                Leveraging advanced architectures such as Transformers,
+                slot-based methods have made great progress in unsupervised
+                object discovery. However, recent slot models still exhibit poor
+                performance in generative modeling, producing blurry images with
+                distorted objects. In this paper, we thus focus on this issue
+                that have previously received little attention: the
+                slot-to-image reconstruction quality, which is important for
+                generation tasks. We propose SlotDiffusion -- a slot-conditioned
+                Latent Diffusion Model (LDM) operating on both image and video
+                data. Thanks to the strong modeling capacity of LDMs,
+                SlotDiffusion achieves state-of-the-art results in both
+                unsupervised object segmentation and visual generation quality
+                across six datasets compared to previous slot models. Moreover,
+                SlotDiffusion can be combined with existing object-centric
+                dynamics models, improving the performance of video prediction
+                and Visual Question Answering (VQA). Finally, we show that
+                SlotDiffusion scales to unconstrained real-world datasets such
+                as PASCAL VOC and COCO, when integrated with pre-trained
+                encoders such as DINO ViT.
+            </p>
+        </div>
+
+        <!--------------------- Method --------------------->
+        <br />
+        <div class="container">
+            <div align="center"><h2>Method</h2></div>
+            <hr />
+        </div>
+        <div class="container_img">
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/arch/SA+baselines.png"
+                    style="width: 100%"
+                />
+            </p>
+        </div>
+        <div class="container">
+            <p>
+                Overview of a general object-centric learning framework on
+                videos (a). The model performs Slot Attention to capture objects
+                with slots, and decodes slots back to images for the
+                reconstruction loss. Previous methods have explored two types of
+                slot decoders: mixture-based (b) and Transformer-based (c).
+            </p>
+            <p>
+                <strong>
+                    However, models with mixture-based decoders [1, 2] cannot
+                    segment objects from complex videos, while models with
+                    Transformer-based decoders [3, 4] generate distorted images
+                    from slots, and thus are not suitable for object-centric
+                    generative models (e.g. video prediction [7]).
+                </strong>
+            </p>
+        </div>
+        <br />
+        <div class="container_img">
+            <p align="center">
+                <img border="0" src="src/arch/DM.png" style="width: 70%" />
+            </p>
+        </div>
+        <div class="container">
+            <p>
+                In this paper, we instead propose a Latent Diffusion Model (LDM)
+                [6] based slot decoder. Given an image $x$, we first leverage a
+                pre-trained VQ-VAE encoder to tokenize it as $z$, and add random
+                Gaussian noise on it as $z_t$. Then, a U-Net is trained to
+                predict the noise $\epsilon_t$ conditioned on slots
+                $\mathcal{S}$. The slot conditioning is achieved via
+                cross-attention.
+            </p>
+            <p>
+                <strong>
+                    Thanks to the strong modeling capacity of diffusion models,
+                    our method, SlotDiffusion, achieves state-of-the-art results
+                    in both unsupervised object segmentation and generative
+                    modeling.
+                </strong>
+            </p>
+        </div>
+
+        <!--------------------- Qualitative Results --------------------->
+        <br />
+        <div class="container">
+            <div align="center"><h2>Qualitative Results</h2></div>
+            <hr />
+            <p>
+                We mainly compare with four baselines: SA (mixture) and SLATE
+                (Transformer) on images, SAVi (mixture) and STEVE (Transformer)
+                on videos. We keep all model components the same, and only
+                replace our slot decoder with an LDM.
+            </p>
+
+            <!--------------------- Seg --------------------->
+            <div align="center">
+                <h4><strong>Object Segmentation</strong></h4>
+            </div>
+            <hr />
+            <p>
+                We show unsupervised scene decomposition results on MOVi videos.
+                SAVi degenerates to trivial stripe patterns. Compared to STEVE,
+                SlotDiffusion achieve better slot tracking and less
+                object-sharing issue, especially on large objects.
+            </p>
+            <div align="left">
+                <h5>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GT
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SAVi
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STEVE
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong
+                        >Ours</strong
+                    >
+                </h5>
+            </div>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/seg/MOVi-D-252.gif"
+                    style="width: 90%"
+                />
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/seg/MOVi-D-578.gif"
+                    style="width: 90%"
+                />
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/seg/MOVi-E-31.gif"
+                    style="width: 90%"
+                />
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/seg/MOVi-E-101.gif"
+                    style="width: 90%"
+                />
+            </p>
+            <br />
+            <br />
+
+            <!--------------------- Gen --------------------->
+            <div align="center">
+                <h4><strong>Generative Modeling</strong></h4>
+            </div>
+            <hr />
+            <p>
+                Object-centric generative models enjoy several advantages, e.g.
+                explicit modeling of object interactions, interpretable image
+                editing. Their generation process often consist of two steps: i)
+                predicting slots in the latent space; ii) decoding slots back to
+                the pixel space. Therefore, their generation quality is bounded
+                by the slot-to-image decoding quality.
+            </p>
+
+            <div align="left">
+                <h5><strong>Reconstruction</strong></h5>
+            </div>
+            <p>
+                We first show some image (CLEVRTex & CelebA) and video (MOVi)
+                reconstruction results. SlotDiffusion preserves local details
+                much better, such as the textures on objects and backgrounds,
+                and the human hairs and facial features.
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/CLEVRTex-CelebA-recon.png"
+                    style="width: 100%"
+                />
+            </p>
+            <div align="left">
+                <h5>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;GT
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SAVi
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STEVE
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong
+                        >Ours</strong
+                    >
+                </h5>
+            </div>
+            <p align="center">
+                <img border="0" src="src/gen/MOVi-E-4.gif" style="width: 70%" />
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/MOVi-E-13.gif"
+                    style="width: 70%"
+                />
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/MOVi-D-55.gif"
+                    style="width: 70%"
+                />
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/MOVi-D-69.gif"
+                    style="width: 70%"
+                />
+            </p>
+            <br />
+
+            <div align="left">
+                <h5><strong>Compositional Generation</strong></h5>
+            </div>
+            <p>
+                We then show results on compositional generation. We treat
+                object slots as basic <strong>visual concepts</strong>, similar
+                to phrases in a sentence. As shown below, SlotDiffusion
+                discovers objects with different shapes on CLEVRTex, and
+                decompose CelebA images to clothes, hairs, faces and
+                backgrounds.
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/seg/CLEVRTex-CelebA-seg.png"
+                    style="width: 100%"
+                />
+            </p>
+            <p>
+                After building a visual concept library (see paper Section 3.3),
+                we are able to generate novel samples by randomly composing
+                different concept slots. Compared to baselines, SlotDiffusion
+                generates results closer to the original datasets.
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/CLEVRTex-CelebA-compose.png"
+                    style="width: 90%"
+                />
+            </p>
+            <br />
+
+            <div align="left">
+                <h5><strong>Image Editing</strong></h5>
+            </div>
+            <p>
+                Finally, we show that SlotDiffusion can edit images by
+                manipulating object slots. For example, we can replace the human
+                faces by swapping the corresponding slots, while keeping the
+                clothes, hairs and backgrounds unchanged.
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/gen/CelebA-face_replace.png"
+                    style="width: 70%"
+                />
+            </p>
+            <br />
+            <br />
+
+            <!--------------------- VP --------------------->
+            <div align="center">
+                <h4><strong>Video Prediction</strong></h4>
+            </div>
+            <hr />
+            <p>
+                We now show how SlotDiffusion's better slot decoder can help
+                downstream video prediction and VQA task. We train an
+                object-centric dynamics model
+                <a href="https://slotformer.github.io/">SlotFormer</a> (SF) over
+                learned slots, and perform future rollout. Our method simulates
+                both correct object dynamics and better visual quality. We also
+                achieve SOTA VQA results on Physion (see paper Section 4.4).
+            </p>
+            <div align="left">
+                <h5>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Video
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;PredRNN
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VQFormer
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STEVE
+                    + SF
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<strong
+                        >Ours</strong
+                    >
+                    + SF
+                </h5>
+            </div>
+            <p align="center">
+                <img border="0" src="src/vp/Physion.gif" style="width: 90%" />
+            </p>
+            <br />
+            <br />
+
+            <!--------------------- Real-World Seg --------------------->
+            <div align="center">
+                <h4><strong>Scale Up to Real-World Data</strong></h4>
+            </div>
+            <hr />
+            <p>
+                Finally, we show that SlotDiffusion can scale up to real-world
+                datasets MS COCO and PASCAL VOC with the help of DINO
+                pre-trained image encoders. Our method not only segments major
+                objects, but also discovers unannotated yet semantically
+                meaningful regions, such as trees, keyboards.
+            </p>
+            <p align="center">
+                <img
+                    border="0"
+                    src="src/real-world/COCO.png"
+                    style="width: 100%"
+                />
+            </p>
         </div>
 
         <!--------------------- References --------------------->
@@ -72,38 +400,52 @@
             <div align="center"><h2>References</h2></div>
             <hr />
             <p>
-                [1] Lin, Zhixuan, et al. "Improving generative imagination in
-                object-centric world models." ICML. 2020.
-            </p>
-            <p>
-                [2] Wang, Yunbo, et al. "Predrnn: Recurrent neural networks for
-                predictive learning using spatiotemporal lstms." NeurIPS. 2017.
-            </p>
-            <p>
-                [3] Zoran, Daniel, et al. "PARTS: Unsupervised segmentation with
-                slots, attention and independence maximization." ICCV. 2021.
-            </p>
-            <p>
-                [4] Yi, Kexin, et al. "CLEVRER: CoLlision Events for Video
-                REpresentation and Reasoning." ICLR. 2020.
-            </p>
-            <p>
-                [5] Bakhtin, Anton, et al. "Phyre: A new benchmark for physical
-                reasoning." NeurIPS. 2019.
-            </p>
-            <p>
-                [6] Bear, Daniel, et al. "Physion: Evaluating Physical
+                [1] Locatello, Francesco, et al. "Object-Centric Learning with
+                Slot Attention." NeurIPS. 2020.
+                <br />
+                [2] Kipf, Thomas, et al. "Conditional Object-Centric Learning
+                from Video." ICLR. 2021.
+                <br />
+                [3] Singh, Gautam, et al. "Illiterate DALL-E Learns to Compose."
+                ICLR. 2022.
+                <br />
+                [4] Singh, Gautam, et al. "Simple Unsupervised Object-Centric
+                Learning for Complex and Naturalistic Videos." NeurIPS. 2022.
+                <br />
+                [5] Ho, Jonathan, et al. "Denoising Diffusion Probabilistic
+                Models." ICML. 2020.
+                <br />
+                [6] Rombach, Robin, et al. "High-Resolution Image Synthesis with
+                Latent Diffusion Models." CVPR. 2022.
+                <br />
+                [7] Wu, Ziyi, et al. "SlotFormer: Unsupervised Visual Dynamics
+                Simulation with Object-Centric Models." ICLR. 2023.
+                <br />
+                [8] Bear, Daniel, et al. "Physion: Evaluating Physical
                 Prediction from Vision in Humans and Machines." NeurIPS Datasets
                 and Benchmarks Track. 2021.
-            </p>
-            <p>
-                [7] Kipf, Thomas, et al. "Conditional Object-Centric Learning
-                from Video." ICLR. 2021.
-            </p>
-            <p>
-                [8] Singh, Gautam, Yi-Fu Wu, and Sungjin Ahn. "Simple
-                Unsupervised Object-Centric Learning for Complex and
-                Naturalistic Videos." NeurIPS. 2022.
+                <br />
+                [9] Wang, Yunbo, et al. "PredRNN: Recurrent Neural Networks for
+                Predictive Learning using Spatiotemporal LSTMs." NeurIPS. 2017.
+                <br />
+                [10] Karazija, Laurynas, et al. "CLEVRTex: A Texture-Rich
+                Benchmark for Unsupervised Multi-Object Segmentation." NeurIPS
+                Datasets and Benchmarks Track. 2021.
+                <br />
+                [11] Liu, Ziwei, et al. "Large-Scale Celeb Faces Attributes
+                (CelebA) Dataset." 2018.
+                <br />
+                [12] Everingham, Mark, et al. "The Pascal Visual Object Classes
+                (VOC) Challenge." IJCV. 2010.
+                <br />
+                [13] Lin, Tsung-Yi, et al. "Microsoft COCO: Common Objects in
+                Context." ECCV. 2014.
+                <br />
+                [14] Caron, Mathilde, et al. "Emerging Properties in
+                Self-Supervised Vision Transformers." ICCV. 2021.
+                <br />
+                [15] Seitzer, Maximilian, et al. "Bridging the Gap to Real-World
+                Object-Centric Learning." ICLR. 2023.
             </p>
         </div>
 
