@@ -60,7 +60,7 @@
         <div class="jumbotron jumbotron-fluid">
             <div class="container" align="center">
                 <h2>
-                    SlotDiffusion: Improving Object-Centric <br />
+                    SlotDiffusion: Object-Centric <br />
                     Generative Modeling with Diffusion Models
                 </h2>
                 <h4><i>Anonymous Submission</i></h4>
@@ -73,28 +73,30 @@
             <div align="center"><h2>Abstract</h2></div>
             <hr />
             <p>
-                Object-centric learning aims to decompose the visual data into a
-                set of individual entities, in contrast to traditional deep
-                learning models that represent a scene with global features.
-                Leveraging advanced architectures such as Transformers,
-                slot-based methods have made great progress in unsupervised
-                object discovery. However, recent slot models still exhibit poor
-                performance in generative modeling, producing blurry images with
-                distorted objects. In this paper, we thus focus on this issue
-                that have previously received little attention: the
-                slot-to-image reconstruction quality, which is important for
-                generation tasks. We propose SlotDiffusion -- a slot-conditioned
-                Latent Diffusion Model (LDM) operating on both image and video
-                data. Thanks to the strong modeling capacity of LDMs,
-                SlotDiffusion achieves state-of-the-art results in both
-                unsupervised object segmentation and visual generation quality
-                across six datasets compared to previous slot models. Moreover,
-                SlotDiffusion can be combined with existing object-centric
-                dynamics models, improving the performance of video prediction
-                and Visual Question Answering (VQA). Finally, we show that
-                SlotDiffusion scales to unconstrained real-world datasets such
-                as PASCAL VOC and COCO, when integrated with pre-trained
-                encoders such as DINO ViT.
+                Object-centric learning aims to represent visual data with a set
+                of object entities (a.k.a. slots), providing structured
+                representations that enable systematic generalization.
+                Leveraging advanced architectures like Transformers, recent
+                approaches have made significant progress in unsupervised object
+                discovery. In addition, slot-based representations hold great
+                potential in visual generation, such as controllable image
+                generation by composing slots, and object manipulation in image
+                editing. However, current slot-based methods often produce
+                blurry images and distorted objects, exhibiting poor generative
+                modeling capabilities. In this paper, we focus on improving the
+                slot-to-image decoding quality, a crucial aspect for
+                high-quality generation. We introduce SlotDiffusion -- an
+                object-centric Latent Diffusion Model (LDM) designed for both
+                image and video data. Thanks to the powerful modeling capacity
+                of LDMs, SlotDiffusion surpasses previous slot models in
+                unsupervised object segmentation and visual generation across
+                six datasets. Furthermore, our learned object features can be
+                utilized by existing object-centric dynamics models, improving
+                video prediction quality and downstream temporal reasoning
+                tasks. Finally, we demonstrate the scalability of SlotDiffusion
+                to unconstrained real-world datasets such as PASCAL VOC and
+                COCO, when integrated with self-supervised pre-trained image
+                encoders.
             </p>
         </div>
 
@@ -373,12 +375,13 @@
             <hr />
             <p>
                 We now show how SlotDiffusion's better slot decoder can help
-                downstream video prediction and VQA tasks. We train an
-                object-centric dynamics model SlotFormer (SF for short) [7] over
-                learned slots, and perform future rollout. Then, we reason the
-                predicted future to answer questions. Our method simulates both
-                correct object dynamics and better visual quality. We also
-                achieve SOTA VQA results on Physion (see paper Section 4.4).
+                downstream video prediction and VQA tasks on Physion dataset. We
+                train an object-centric dynamics model SlotFormer (SF for short)
+                [7] over learned slots, and perform future rollout. Then, we
+                reason the predicted future to answer questions. Our method
+                simulates both correct object dynamics and better visual
+                quality. We also achieve SOTA VQA results on Physion (see paper
+                Section 4.4).
             </p>
             <div align="center">
                 <h5>
@@ -472,6 +475,9 @@
                 <br />
                 [15] Seitzer, Maximilian, et al. "Bridging the Gap to Real-World
                 Object-Centric Learning." ICLR. 2023.
+                <br />
+                [16] Greff, Klaus, et al. "Kubric: A Scalable Dataset
+                Generator." CVPR. 2022.
             </p>
         </div>
 
